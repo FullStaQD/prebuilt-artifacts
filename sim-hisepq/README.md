@@ -10,16 +10,20 @@
 ## Provenance
 
 - **Repo URL:** <https://github.com/caps-tum/HiSEP-Q-2.0>
-- **Commit SHA:** `817e42e07feaf6dd8acc783b7ff6c55c9c775c08`
-- **Date:** `2026-06-19`
+- **Commit SHA:** encoded in asset
+- **Date:** encoded in asset
 - **Modified:** no
 
 We use their provided build script to build the binary:
 
 ```shell
-cd demo/
-./verilator/run_verilator.sh --build-only
-# produces verilator/obj_dir/sim_hisepq
+cd demo/verilator/
+./run_verilator.sh --build-only
+# produces ./obj_dir/sim_hisepq
+
+# Use this command to prepare for release (update the `r1` manually suffix as needed):
+name="sim-hisepq-$(git show -s --format=%cd --date=format:%Y%m%d HEAD)-g$(git rev-parse --short HEAD)-r1-linux-x86_64"
+tar -C obj_dir/ -czf "$name.tar.gz" sim_hisepq
 ```
 
 FIXME: Mention vivado toolchain.
