@@ -1,8 +1,8 @@
 # sim-hisepq
 
-`sim_hisepq` is a compiled Verilator test bench from the
-[HiSEP-Q 2.0 repo](https://github.com/caps-tum/HiSEP-Q-2.0), packaged here
-because building it requires a licensed Vivado installation.
+`sim_hisepq` is a compiled Verilator test bench from the [HiSEP-Q 2.0
+repo](https://github.com/caps-tum/HiSEP-Q-2.0), packaged here so that running
+the tests doesn't require Verilator ≥ 5.
 
 The binary itself has no Xilinx or Vivado runtime dependency.
 
@@ -19,12 +19,13 @@ Licensed Apache-2.0 — see [LICENSE](LICENSE).
 - **Modified:** no
 
 Upstream commit SHA and date are encoded in each asset filename; the exact
-Vivado version used is recorded in the corresponding release notes.
+Verilator version used and other relevant environment aspects are recorded in
+the corresponding release notes.
 
 ## Building a release
 
-Requires Verilator and a licensed Vivado installation. Run from a clean HiSEP-Q
-checkout, here assuming on linux-86_64 host:
+Requires Verilator. Run from a clean HiSEP-Q checkout, here assuming on
+linux-86_64 host:
 
 ```shell
 cd demo/verilator/
@@ -43,7 +44,8 @@ Create a release like so:
 # Create a draft release:
 gh release create "$tag" --draft --title "$tag" --notes-file notes.md "$name.tar.gz"
 
-# iterate ...
+# iterate ... e.g. notes on build environment:
+gh release edit "$tag" --notes-file notes.md
 
 # Publish:
 gh release edit "$tag" --draft=false
