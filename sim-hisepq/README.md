@@ -47,10 +47,10 @@ Create a release like so — run inside this repo, at the correct commit (likely
 tag=...  # as above
 name=... # as above
 
-# Create a draft release:
+# Create a draft release (document build env in notes.md):
 gh release create "$tag" --draft --title "$tag" --notes-file notes.md "$name.tar.gz"
 
-# Iterate ... e.g. notes on build environment:
+# Iterate ... e.g. update notes:
 gh release edit "$tag" --notes-file notes.md
 
 # Publish (important: need to be on right commit, makes a git tag):
