@@ -4,7 +4,8 @@
 repo](https://github.com/caps-tum/HiSEP-Q-2.0), packaged here so that running
 the tests doesn't require Verilator ≥ 5.
 
-The binary itself has no Xilinx or Vivado runtime dependency.
+Unlike `demo/run.sh`, which drives the same test bench under Vivado, this
+binary is self-contained and needs no Xilinx tooling at runtime.
 
 ```shell
 # Uses a $readmemh memory image as input.
@@ -24,14 +25,16 @@ the corresponding release notes.
 
 ## Building a release
 
-Requires Verilator. Run from a clean HiSEP-Q checkout, here assuming on
-linux-86_64 host:
+Requires Verilator. Run from a clean HiSEP-Q checkout, here assuming a
+linux-x86_64 host. Prefer the Verilator version recorded in the previous
+release's notes; a different version is a configuration change, so bump the
+`r` suffix.
 
 ```shell
 cd demo/verilator/
 ./run_verilator.sh --build-only        # produces ./obj_dir/sim_hisepq
 
-# Manually bump the r1 suffix if rebuilding the same commit with a different
+# Manually bump the r1 suffix when rebuilding the same commit with a different
 # configuration.
 tag="sim-hisepq-$(git show -s --format=%cd --date=format:%Y%m%d HEAD)-g$(git rev-parse --short HEAD)-r1"
 name="$tag-linux-x86_64"
@@ -44,7 +47,7 @@ Create a release like so:
 # Create a draft release:
 gh release create "$tag" --draft --title "$tag" --notes-file notes.md "$name.tar.gz"
 
-# iterate ... e.g. notes on build environment:
+# Iterate ... e.g. notes on build environment:
 gh release edit "$tag" --notes-file notes.md
 
 # Publish:
