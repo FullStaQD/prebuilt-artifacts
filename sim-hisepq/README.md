@@ -1,29 +1,50 @@
 # sim-hisepq
 
-`sim_hisepq` is a compiled test bench from the [HiSEP-Q repo](https://github.com/caps-tum/HiSEP-Q-2.0). Usage
+`sim_hisepq` is a compiled Verilator test bench from the
+[HiSEP-Q 2.0 repo](https://github.com/caps-tum/HiSEP-Q-2.0), packaged here
+because building it requires a licensed Vivado installation.
+
+The binary itself has no Xilinx or Vivado runtime dependency.
 
 ```shell
 # Uses a $readmemh memory image as input.
 ./sim_hisepq +MEM_FILE=a.mem
 ```
 
+Licensed Apache-2.0 — see [LICENSE](LICENSE).
+
 ## Provenance
 
-- **Repo URL:** <https://github.com/caps-tum/HiSEP-Q-2.0>
-- **Commit SHA:** encoded in asset
-- **Date:** encoded in asset
+- **Repo:** <https://github.com/caps-tum/HiSEP-Q-2.0>
 - **Modified:** no
 
-We use their provided build script to build the binary:
+Upstream commit SHA and date are encoded in each asset filename; the exact
+Vivado version used is recorded in the corresponding release notes.
+
+## Building a release
+
+Requires Verilator and a licensed Vivado installation. Run from a clean HiSEP-Q
+checkout, here assuming on linux-86_64 host:
 
 ```shell
 cd demo/verilator/
-./run_verilator.sh --build-only
-# produces ./obj_dir/sim_hisepq
+./run_verilator.sh --build-only        # produces ./obj_dir/sim_hisepq
 
-# Use this command to prepare for release (update the `r1` manually suffix as needed):
-name="sim-hisepq-$(git show -s --format=%cd --date=format:%Y%m%d HEAD)-g$(git rev-parse --short HEAD)-r1-linux-x86_64"
+# Manually bump the r1 suffix if rebuilding the same commit with a different
+# configuration.
+tag="sim-hisepq-$(git show -s --format=%cd --date=format:%Y%m%d HEAD)-g$(git rev-parse --short HEAD)-r1"
+name="$tag-linux-x86_64"
 tar -C obj_dir/ -czf "$name.tar.gz" sim_hisepq
 ```
 
-FIXME: Mention vivado toolchain.
+Create a release like so:
+
+```shell
+# Create a draft release:
+gh release create "$tag" --draft --title "$tag" --notes-file notes.md "$name.tar.gz"
+
+# iterate ...
+
+# Publish:
+gh release edit "$tag" --draft=false
+```
